@@ -1,9 +1,10 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/index.tsx', // point d'entrée
+  entry: './src/index.tsx',
   output: {
-    filename: 'main.js',     // fichier compilé
+    filename: 'main.js',
     path: path.resolve(__dirname, 'build'),
     publicPath: './',
   },
@@ -19,6 +20,12 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html', // ton template
+      filename: 'index.html',          // fichier généré dans build/
+    }),
+  ],
   devServer: {
     static: './build',
     port: 3000,
