@@ -5,32 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FAQ - Back to the Steam</title>
   <link rel="stylesheet" href="../css/faq.css">
-  <!-- Firebase -->
-  <script type="module">
-    // Firebase App (v9 modular)
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.1.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "TON_API_KEY",
-      authDomain: "TON_PROJECT.firebaseapp.com",
-      projectId: "TON_PROJECT",
-      storageBucket: "TON_PROJECT.appspot.com",
-      messagingSenderId: "TON_SENDER_ID",
-      appId: "TON_APP_ID"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    export async function fetchFAQ() {
-      const faqCol = collection(db, "faq");
-      const faqSnapshot = await getDocs(faqCol);
-      return faqSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    }
-  </script>
 </head>
 <body>
+     <header>
+    <nav id="navigation"></nav>
+  </header>
 <main class="faq-main">
 
   <!-- Hero -->
@@ -52,83 +31,15 @@
         <input type="text" id="faq-search" placeholder="Rechercher une question...">
         <div class="faq-list"></div>
       </div>
+      <div id="faq-container"></div>
     </div>
   </section>
 
 </main>
 
-<script type="module">
-  import { fetchFAQ } from './faq.html';
 
-  const categories = ['Toutes','Projet','Technique','Équipe','Partenaires','Compétition'];
-  const faqCategoriesEl = document.querySelector('.faq-categories');
-  const faqListEl = document.querySelector('.faq-list');
-  const searchInput = document.getElementById('faq-search');
-
-  let faqData = [];
-  let selectedCategory = 'Toutes';
-  let openAccordionId = null;
-
-  function renderCategories() {
-    faqCategoriesEl.innerHTML = '';
-    categories.forEach(cat => {
-      const btn = document.createElement('button');
-      btn.textContent = cat;
-      btn.className = 'faq-cat-btn';
-      if(cat === selectedCategory) btn.classList.add('active');
-      btn.onclick = () => {
-        selectedCategory = cat;
-        renderCategories();
-        renderFAQ();
-      };
-      faqCategoriesEl.appendChild(btn);
-    });
-  }
-
-  function renderFAQ() {
-    const query = searchInput.value.toLowerCase();
-    const filtered = faqData.filter(item => 
-      (selectedCategory === 'Toutes' || item.categorie === selectedCategory) &&
-      (item.question.toLowerCase().includes(query) || item.reponse.toLowerCase().includes(query))
-    );
-
-    faqListEl.innerHTML = '';
-    if(filtered.length === 0) {
-      faqListEl.innerHTML = `<div class="faq-empty"><p>Aucune question trouvée</p></div>`;
-      return;
-    }
-
-    filtered.sort((a,b) => a.ordre - b.ordre).forEach(item => {
-      const card = document.createElement('div');
-      card.className = 'faq-card';
-
-      const header = document.createElement('button');
-      header.className = 'faq-question';
-      header.innerHTML = `<span class="faq-cat-label">${item.categorie}</span> ${item.question}`;
-      header.onclick = () => {
-        openAccordionId = openAccordionId === item.id ? null : item.id;
-        renderFAQ();
-      };
-
-      const answer = document.createElement('div');
-      answer.className = 'faq-answer';
-      answer.textContent = item.reponse;
-      if(openAccordionId === item.id) answer.style.display = 'block';
-      else answer.style.display = 'none';
-
-      card.appendChild(header);
-      card.appendChild(answer);
-      faqListEl.appendChild(card);
-    });
-  }
-
-  searchInput.addEventListener('input', renderFAQ);
-
-  fetchFAQ().then(data => {
-    faqData = data;
-    renderCategories();
-    renderFAQ();
-  });
-</script>
+<script type="module" src="../js/firebase.js"></script>
+<script type="module" src="../js/loadFaq.js"></script>
+<script type="module" src="../js/main.js"></script>
 </body>
 </html>
