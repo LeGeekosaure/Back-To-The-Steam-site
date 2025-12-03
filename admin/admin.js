@@ -12,8 +12,9 @@ import {
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
 const allowedAdmins = [
-  "admin@steam.com",
-  "enzolombard1306@gmail.com"
+  "manon.wagner.marschall@gmail.com",
+  "enzolombard1306@gmail.com",
+  "alexandre.schoettel538@gmail.com"
 ];
 
 onAuthStateChanged(auth, user => {
