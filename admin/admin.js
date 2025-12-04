@@ -12,7 +12,8 @@ import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/
 const allowedAdmins = [
   "manon.wagner.marschall@gmail.com",
   "enzolombard1306@gmail.com",
-  "alexandre.schoettel538@gmail.com"
+  "alexandre.schoettel538@gmail.com",
+  "back.to.the.steam.1990@gmail.com"
 ];
 
 // --- CHECK ADMIN ACCESS ---
